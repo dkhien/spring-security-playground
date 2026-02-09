@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/security_playground
+    username: playground
+    password: playground
+  jpa:
+    hibernate:
+      ddl-auto: validate

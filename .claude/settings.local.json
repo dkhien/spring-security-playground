@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s \"D:\\\\Workspace\\\\Spring\\\\spring-security-playground\")",
+      "Bash(git -C \"D:\\\\Workspace\\\\Spring\\\\spring-security-playground\" log --oneline)",
+      "Bash(git -C \"D:\\\\Workspace\\\\Spring\\\\spring-security-playground\" log --oneline -10)",
+      "WebSearch",
+      "Bash(mvn:*)",
+      "Bash(export PATH=\"$USERPROFILE/.m2/wrapper/dists/apache-maven-3.9.12/59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798/bin:$PATH\")",
+      "Bash(MVN_HOME=\"$USERPROFILE/.m2/wrapper/dists/apache-maven-3.9.12/59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798\":*)",
+      "Bash(cmd.exe /c \"set PATH=%USERPROFILE%\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.12\\\\59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798\\\\bin;%PATH% && mvn --version\")",
+      "Bash(java -version:*)",
+      "Bash(MAVEN_BIN=\"$USERPROFILE/.m2/wrapper/dists/apache-maven-3.9.12/59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798/bin\")",
+      "Bash(\"$MAVEN_BIN/mvn\" --version)",
+      "Bash(MVN=\"$USERPROFILE/.m2/wrapper/dists/apache-maven-3.9.12/59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798/bin/mvn\")",
+      "Bash(\"$MVN\" -pl backend compile -q)",
+      "Bash(\"$MVN\" wrapper:wrapper -Dmaven=3.9.12 -q)",
+      "Bash(\"$MVN\" -pl backend test)",
+      "Bash(MVNBIN=\"$USERPROFILE/.m2/wrapper/dists/apache-maven-3.9.12/59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798/bin/mvn\":*)",
+      "Bash(\"$MVNBIN\" -pl backend test)",
+      "Bash(export MVNBIN=\"C:/Users/Hien Doan/.m2/wrapper/dists/apache-maven-3.9.12/59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798/bin/mvn\")",
+      "Bash(\"C:\\\\Users\\\\Hien Doan\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.12\\\\59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798\\\\bin\\\\mvn\" -pl backend test -f \"D:\\\\Workspace\\\\Spring\\\\spring-security-playground\\\\pom.xml\")",
+      "Bash(where:*)",
+      "Bash(cmd.exe /c \"where npm\")",
+      "Bash(npm:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx vite build)",
+      "Bash(\"C:\\\\Users\\\\Hien Doan\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.12\\\\59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798\\\\bin\\\\mvn\" -pl backend compile -q -f \"D:\\\\Workspace\\\\Spring\\\\spring-security-playground\\\\pom.xml\")"
+    ]
+  }
+}
