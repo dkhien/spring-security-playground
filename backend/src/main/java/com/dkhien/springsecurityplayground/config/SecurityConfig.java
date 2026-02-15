@@ -23,11 +23,11 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/api/public").permitAll()
+                .requestMatchers("/api/public", "/api/auth/login", "/api/auth/refresh", "/error").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         )
-        .httpBasic(Customizer.withDefaults())
+        .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
