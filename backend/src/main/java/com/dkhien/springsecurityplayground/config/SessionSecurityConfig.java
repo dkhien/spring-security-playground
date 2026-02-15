@@ -22,7 +22,7 @@ public class SessionSecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/api/session/login")
-                        .defaultSuccessUrl("/api/session/user", false)
+                        .defaultSuccessUrl("/api/session/me", false)
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/session/logout")

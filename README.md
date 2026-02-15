@@ -35,21 +35,21 @@ Each implemented stage has its own `SecurityFilterChain` with `securityMatcher` 
 
 ```bash
 # Stage 1 — Basic Auth
-curl -u user:password http://localhost:8080/api/basic-auth/user
+curl -u user:password http://localhost:8080/api/basic-auth/me
 
 # Stage 2 — Session
 curl -X POST http://localhost:8080/api/session/login \
   -d "username=user&password=password" -c cookies.txt -L
-curl -b cookies.txt http://localhost:8080/api/session/user
+curl -b cookies.txt http://localhost:8080/api/session/me
 
 # Stage 3 — JWT
-curl -X POST http://localhost:8080/api/jwt/auth/login \
+curl -X POST http://localhost:8080/api/jwt/token \
   -H "Content-Type: application/json" \
   -d '{"username":"user","password":"password"}'
-curl http://localhost:8080/api/jwt/user -H "Authorization: Bearer <token>"
+curl http://localhost:8080/api/jwt/me -H "Authorization: Bearer <token>"
 ```
 
-Each stage exposes `/public` (open), `/user` (authenticated), and `/admin` (ROLE_ADMIN) under its prefix.
+Each stage exposes `/public` (open), `/me` (authenticated), and `/admin` (ADMIN role) under its prefix.
 
 ---
 

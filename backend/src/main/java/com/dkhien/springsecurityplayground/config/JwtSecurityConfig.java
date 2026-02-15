@@ -24,7 +24,7 @@ public class JwtSecurityConfig {
     SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/jwt/**")
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/jwt/public", "/api/jwt/auth/login", "/api/jwt/auth/refresh").permitAll()
+                        .requestMatchers("/api/jwt/public", "/api/jwt/token", "/api/jwt/token/refresh").permitAll()
                         .requestMatchers("/api/jwt/admin").hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )

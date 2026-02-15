@@ -17,23 +17,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/jwt/auth")
-public class JwtAuthController {
+@RequestMapping("/api/jwt/token")
+public class JwtTokenController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
 
-    public JwtAuthController(AuthenticationManager authenticationManager,
-                             JwtTokenProvider tokenProvider,
-                             UserDetailsService userDetailsService) {
+    public JwtTokenController(AuthenticationManager authenticationManager,
+                              JwtTokenProvider tokenProvider,
+                              UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+    @PostMapping
+    public LoginResponse create(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.username(),
