@@ -1,0 +1,44 @@
+openapi: 3.0.3
+info:
+  title: Session API
+  version: 1.0.0
+
+paths:
+  /api/session/me:
+    get:
+      operationId: sessionMe
+      tags: [session]
+      summary: Get current user (Session)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/session/public:
+    get:
+      operationId: sessionPublic
+      tags: [session]
+      summary: Public endpoint (Session)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/session/admin:
+    get:
+      operationId: sessionAdmin
+      tags: [session]
+      summary: Admin endpoint (Session)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

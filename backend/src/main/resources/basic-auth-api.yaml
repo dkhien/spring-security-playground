@@ -1,0 +1,44 @@
+openapi: 3.0.3
+info:
+  title: Basic Auth API
+  version: 1.0.0
+
+paths:
+  /api/basic-auth/me:
+    get:
+      operationId: basicAuthMe
+      tags: [basic-auth]
+      summary: Get current user (Basic Auth)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/basic-auth/public:
+    get:
+      operationId: basicAuthPublic
+      tags: [basic-auth]
+      summary: Public endpoint (Basic Auth)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/basic-auth/admin:
+    get:
+      operationId: basicAuthAdmin
+      tags: [basic-auth]
+      summary: Admin endpoint (Basic Auth)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

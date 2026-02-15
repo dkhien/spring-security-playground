@@ -1,8 +1,9 @@
 package com.dkhien.springsecurityplayground.controller.jwt;
 
-import com.dkhien.springsecurityplayground.dto.LoginRequest;
-import com.dkhien.springsecurityplayground.dto.LoginResponse;
-import com.dkhien.springsecurityplayground.dto.RefreshRequest;
+import com.dkhien.springsecurityplayground.api.jwt.JwtTokenApi;
+import com.dkhien.springsecurityplayground.model.jwt.LoginRequest;
+import com.dkhien.springsecurityplayground.model.jwt.LoginResponse;
+import com.dkhien.springsecurityplayground.model.jwt.RefreshRequest;
 import com.dkhien.springsecurityplayground.security.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,14 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/jwt/token")
-public class JwtTokenController {
+public class JwtTokenController implements JwtTokenApi {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
@@ -32,12 +29,12 @@ public class JwtTokenController {
         this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping
-    public LoginResponse create(@RequestBody LoginRequest loginRequest) {
+    @Override
+    public ResponseEntity<LoginResponse> createToken(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.username(),
-                        loginRequest.password()
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
                 )
         );
 
@@ -45,12 +42,12 @@ public class JwtTokenController {
 
         String accessToken = tokenProvider.generateAccessToken(authentication);
         String refreshToken = tokenProvider.generateRefreshToken();
-        return new LoginResponse(accessToken, refreshToken);
+        return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshRequest request) {
-        if (!tokenProvider.validateRefreshToken(request.refreshToken())) {
+    @Override
+    public ResponseEntity<LoginResponse> refreshToken(RefreshRequest refreshRequest) {
+        if (!tokenProvider.validateRefreshToken(refreshRequest.getRefreshToken())) {
             return ResponseEntity.status(401).build();
         }
 

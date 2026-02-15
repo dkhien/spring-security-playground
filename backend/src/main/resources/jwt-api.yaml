@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: JWT API
+  version: 1.0.0
+
+paths:
+  /api/jwt/me:
+    get:
+      operationId: jwtMe
+      tags: [jwt-user]
+      summary: Get current user (JWT)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/jwt/public:
+    get:
+      operationId: jwtPublic
+      tags: [jwt-user]
+      summary: Public endpoint (JWT)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/jwt/admin:
+    get:
+      operationId: jwtAdmin
+      tags: [jwt-user]
+      summary: Admin endpoint (JWT)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/jwt/token:
+    post:
+      operationId: createToken
+      tags: [jwt-token]
+      summary: Authenticate and get JWT tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+  /api/jwt/token/refresh:
+    post:
+      operationId: refreshToken
+      tags: [jwt-token]
+      summary: Refresh JWT tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid refresh token
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      required: [accessToken, refreshToken]
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+
+    RefreshRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string

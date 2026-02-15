@@ -1,26 +1,26 @@
 package com.dkhien.springsecurityplayground.controller.basicauth;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.dkhien.springsecurityplayground.api.basicauth.BasicAuthApi;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/basic-auth")
-public class BasicAuthController {
+public class BasicAuthController implements BasicAuthApi {
 
-    @GetMapping("/me")
-    public String me(Authentication authentication) {
-        return "Hello, " + authentication.getName() + " (Basic Auth)";
+    @Override
+    public ResponseEntity<String> basicAuthMe() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok("Hello, " + name + " (Basic Auth)");
     }
 
-    @GetMapping("/public")
-    public String publicEndpoint() {
-        return "This is a public endpoint. (Basic Auth)";
+    @Override
+    public ResponseEntity<String> basicAuthPublic() {
+        return ResponseEntity.ok("This is a public endpoint. (Basic Auth)");
     }
 
-    @GetMapping("/admin")
-    public String adminEndpoint() {
-        return "This is an admin endpoint. (Basic Auth)";
+    @Override
+    public ResponseEntity<String> basicAuthAdmin() {
+        return ResponseEntity.ok("This is an admin endpoint. (Basic Auth)");
     }
 }

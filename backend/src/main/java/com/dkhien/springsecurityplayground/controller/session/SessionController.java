@@ -1,27 +1,31 @@
 package com.dkhien.springsecurityplayground.controller.session;
 
-import jakarta.servlet.http.HttpSession;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.dkhien.springsecurityplayground.api.session.SessionApi;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
-@RequestMapping("/api/session")
-public class SessionController {
+public class SessionController implements SessionApi {
 
-    @GetMapping("/me")
-    public String me(Authentication authentication, HttpSession session) {
-        return "Hello, " + authentication.getName() + " (Session)\nSession ID: " + session.getId();
+    @Override
+    public ResponseEntity<String> sessionMe() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String sessionId = request.getSession().getId();
+        return ResponseEntity.ok("Hello, " + name + " (Session)\nSession ID: " + sessionId);
     }
 
-    @GetMapping("/public")
-    public String publicEndpoint() {
-        return "This is a public endpoint. (Session)";
+    @Override
+    public ResponseEntity<String> sessionPublic() {
+        return ResponseEntity.ok("This is a public endpoint. (Session)");
     }
 
-    @GetMapping("/admin")
-    public String adminEndpoint() {
-        return "This is an admin endpoint. (Session)";
+    @Override
+    public ResponseEntity<String> sessionAdmin() {
+        return ResponseEntity.ok("This is an admin endpoint. (Session)");
     }
 }

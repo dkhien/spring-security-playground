@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl.exe:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(\"C:\\\\Users\\\\Hien Doan\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.12\\\\59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798\\\\bin\\\\mvn\" compile -f \"D:\\\\Workspace\\\\Spring\\\\spring-security-playground\\\\backend\\\\pom.xml\")",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:openapi-generator.tech)",
+      "WebFetch(domain:mvnrepository.com)",
+      "Bash(\"C:\\\\Users\\\\Hien Doan\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.12\\\\59fe215c0ad6947fea90184bf7add084544567b927287592651fda3782e0e798\\\\bin\\\\mvn\" generate-sources -f \"D:\\\\Workspace\\\\Spring\\\\spring-security-playground\\\\backend\\\\pom.xml\")"
+    ]
+  }
+}
