@@ -1,5 +1,6 @@
 package com.dkhien.springsecurityplayground.config;
 
+import com.dkhien.springsecurityplayground.security.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,7 +17,7 @@ public class BasicAuthSecurityConfig {
         http.securityMatcher("/api/basic-auth/**")
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/basic-auth/public").permitAll()
-                        .requestMatchers("/api/basic-auth/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/basic-auth/admin").hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

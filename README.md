@@ -26,8 +26,8 @@ Each implemented stage has its own `SecurityFilterChain` with `securityMatcher` 
 
 | Username | Password | Roles |
 |----------|----------|-------|
-| `user` | `password` | `ROLE_USER` |
-| `admin` | `password` | `ROLE_ADMIN` |
+| `user` | `password` | `USER` |
+| `admin` | `password` | `ADMIN` |
 
 ---
 

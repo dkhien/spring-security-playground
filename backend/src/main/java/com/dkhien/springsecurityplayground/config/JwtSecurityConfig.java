@@ -1,6 +1,7 @@
 package com.dkhien.springsecurityplayground.config;
 
 import com.dkhien.springsecurityplayground.security.JwtAuthenticationFilter;
+import com.dkhien.springsecurityplayground.security.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -24,7 +25,7 @@ public class JwtSecurityConfig {
         http.securityMatcher("/api/jwt/**")
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/jwt/public", "/api/jwt/auth/login", "/api/jwt/auth/refresh").permitAll()
-                        .requestMatchers("/api/jwt/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/jwt/admin").hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())

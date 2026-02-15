@@ -1,5 +1,6 @@
 package com.dkhien.springsecurityplayground.config;
 
+import com.dkhien.springsecurityplayground.security.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,11 +26,11 @@ public class SharedSecurityConfig {
     UserDetailsService userDetailsService(PasswordEncoder encoder) {
         UserDetails normalUser = User.withUsername("user")
                 .password(encoder.encode("password"))
-                .roles("USER")
+                .roles(Role.USER.name())
                 .build();
         UserDetails adminUser = User.withUsername("admin")
                 .password(encoder.encode("password"))
-                .roles("ADMIN")
+                .roles(Role.ADMIN.name())
                 .build();
         return new InMemoryUserDetailsManager(List.of(normalUser, adminUser));
     }

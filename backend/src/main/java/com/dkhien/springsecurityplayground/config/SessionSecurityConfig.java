@@ -1,5 +1,6 @@
 package com.dkhien.springsecurityplayground.config;
 
+import com.dkhien.springsecurityplayground.security.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,7 +17,7 @@ public class SessionSecurityConfig {
         http.securityMatcher("/api/session/**")
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/session/public", "/api/session/login").permitAll()
-                        .requestMatchers("/api/session/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/session/admin").hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
