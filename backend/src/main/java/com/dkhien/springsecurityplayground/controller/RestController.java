@@ -1,19 +1,29 @@
 package com.dkhien.springsecurityplayground.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
 
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 public class RestController {
 
     @GetMapping("/user")
-    public String user() {
+    public String user(HttpSession session) {
         var securityContext = SecurityContextHolder.getContext();
         var authentication = securityContext.getAuthentication();
         var principal = authentication.getPrincipal();
-        return "Hello, " + principal;
+        var name = "UNKNOWN";
+        if (principal instanceof Principal) {
+            name = ((Principal) principal).getName();
+        } else if (principal instanceof User) {
+            name = ((User) principal).getUsername();
+        }
+        return "Hello, " + name + "\nType: " + principal.getClass() + "\nSession ID: " + session.getId();
     }
 
     @GetMapping("/public")
