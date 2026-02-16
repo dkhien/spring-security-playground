@@ -6,12 +6,16 @@ import com.dkhien.springsecurityplayground.exception.UsernameAlreadyTakenExcepti
 import com.dkhien.springsecurityplayground.repository.AppUserRepository;
 import com.dkhien.springsecurityplayground.security.Role;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AppUserService {
@@ -37,7 +41,8 @@ public class AppUserService {
     }
 
     @PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
-    public AppUser findByUsername(String username) {
+    public AppUser findByUsername(@Param("username") String username) {
+        log.info("Name: " + SecurityContextHolder.getContext().getAuthentication().getName());
         return findByUsernameInternal(username);
     }
 
@@ -47,7 +52,7 @@ public class AppUserService {
     }
 
     @PreAuthorize("hasRole('ADMIN') or principal.id == #id")
-    public AppUser findById(Long id) {
+    public AppUser findById(@Param("id") Long id) {
         return findByIdInternal(id);
     }
 
@@ -56,7 +61,7 @@ public class AppUserService {
     }
 
     @PreAuthorize("hasRole('ADMIN') or principal.id == #id")
-    public AppUser updateUser(Long id, String name, String email) {
+    public AppUser updateUser(@Param("id") Long id, String name, String email) {
         AppUser user = appUserRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
         if (name != null) {
@@ -85,7 +90,7 @@ public class AppUserService {
     }
 
     @PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
-    public void changePassword(String username, String oldPassword, String newPassword) {
+    public void changePassword(@Param("username") String username, String oldPassword, String newPassword) {
         AppUser user = appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
