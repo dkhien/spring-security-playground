@@ -1,5 +1,6 @@
 package com.dkhien.springsecurityplayground.security;
 
+import com.dkhien.springsecurityplayground.entity.AppUser;
 import com.dkhien.springsecurityplayground.service.AppUserService;
 import com.dkhien.springsecurityplayground.service.RefreshTokenService;
 import com.dkhien.springsecurityplayground.utility.Utils;
@@ -69,12 +70,16 @@ public class JwtTokenProvider {
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
+        return generateRefreshToken(appUserService.findByUsername(userDetails.getUsername()));
+    }
+
+    public String generateRefreshToken(AppUser appUser) {
         String rawToken = UUID.randomUUID().toString();
         var refreshToken = new RefreshToken();
         refreshToken.setTokenHash(Utils.sha256(rawToken));
         refreshToken.setExpiryDate(Instant.ofEpochMilli(System.currentTimeMillis() + refreshTokenExpiration));
         refreshToken.setRevoked(false);
-        refreshToken.setAppUser(appUserService.findByUsername(userDetails.getUsername()));
+        refreshToken.setAppUser(appUser);
         refreshTokenService.save(refreshToken);
         return rawToken;
     }

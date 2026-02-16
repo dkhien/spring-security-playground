@@ -23,4 +23,9 @@ public class RefreshTokenService {
     public RefreshToken save(RefreshToken refreshToken) {
         return refreshTokenRepository.save(refreshToken);
     }
+
+    public RefreshToken revokeAccessToken(RefreshToken refreshToken) {
+        refreshToken.setRevoked(true);
+        return save(refreshToken);
+    }
 }
