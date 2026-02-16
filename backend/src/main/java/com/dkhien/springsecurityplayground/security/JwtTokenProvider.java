@@ -1,6 +1,7 @@
 package com.dkhien.springsecurityplayground.security;
 
 import com.dkhien.springsecurityplayground.entity.AppUser;
+import com.dkhien.springsecurityplayground.exception.InvalidRefreshTokenException;
 import com.dkhien.springsecurityplayground.service.AppUserService;
 import com.dkhien.springsecurityplayground.service.RefreshTokenService;
 import com.dkhien.springsecurityplayground.utility.Utils;
@@ -122,9 +123,21 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public Optional<RefreshToken> validateRefreshToken(String rawToken) {
-        return refreshTokenService.findByRawToken(rawToken)
-                .filter(token -> !token.isRevoked())
-                .filter(token -> !token.getExpiryDate().isBefore(Instant.now()));
+    public RefreshToken validateRefreshToken(String rawToken) {
+        var refreshToken = refreshTokenService.findByRawToken(rawToken);
+
+        if (refreshToken.isRevoked()) {
+            log.warn("Sign of theft: revoked refresh token being used. Revoking all refresh tokens of user.");
+            refreshTokenService.revokeAllByUser(refreshToken.getAppUser().getId());
+            throw new InvalidRefreshTokenException("revoked");
+        }
+
+        if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
+            log.warn("Expired refresh token");
+            throw new InvalidRefreshTokenException("expired");
+        }
+
+        refreshTokenService.revokeRefreshToken(refreshToken);
+        return refreshToken;
     }
 }

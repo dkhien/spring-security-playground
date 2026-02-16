@@ -6,7 +6,6 @@ import com.dkhien.springsecurityplayground.model.jwt.LoginRequest;
 import com.dkhien.springsecurityplayground.model.jwt.LoginResponse;
 import com.dkhien.springsecurityplayground.model.jwt.RefreshRequest;
 import com.dkhien.springsecurityplayground.security.JwtTokenProvider;
-import com.dkhien.springsecurityplayground.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +23,6 @@ public class JwtTokenController implements JwtTokenApi {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
-    private final RefreshTokenService refreshTokenService;
 
     @Override
     public ResponseEntity<LoginResponse> createToken(LoginRequest loginRequest) {
@@ -45,14 +43,7 @@ public class JwtTokenController implements JwtTokenApi {
 
     @Override
     public ResponseEntity<LoginResponse> refreshToken(RefreshRequest refreshRequest) {
-        RefreshToken refreshToken = tokenProvider.validateRefreshToken(refreshRequest.getRefreshToken())
-                .orElse(null);
-
-        if (refreshToken == null) {
-            return ResponseEntity.status(401).build();
-        }
-
-        refreshToken = refreshTokenService.revokeAccessToken(refreshToken);
+        RefreshToken refreshToken = tokenProvider.validateRefreshToken(refreshRequest.getRefreshToken());
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(
                 refreshToken.getAppUser().getUsername());
