@@ -1,6 +1,6 @@
 # Spring Security Playground
 
-Hands-on Spring Security learning playground. All stages coexist in a single codebase, isolated by URL prefix — no branch switching needed.
+Hands-on Spring Security learning playground.
 
 **Tech stack:** Spring Boot 4 · Spring Security 7 · Java 21 · React (Vite)
 
