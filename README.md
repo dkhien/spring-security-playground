@@ -11,7 +11,7 @@ Hands-on Spring Security learning playground.
 - [x] **Stage 1 — Basic Auth** (`/api/basic-auth/**`) — HTTP Basic with in-memory users
 - [x] **Stage 2 — Session** (`/api/session/**`) — Form login + JSESSIONID
 - [x] **Stage 3 — JWT** (`/api/jwt/**`) — Bearer token, stateless, refresh rotation
-- [ ] **Stage 4 — RBAC** — `@PreAuthorize`, method-level security, hierarchical roles
+- [x] **Stage 4 — RBAC** — `@PreAuthorize`, method-level security, hierarchical roles
 - [ ] **Stage 5 — Common Auth** — Remember Me, forgot password, MFA/OTP, account lockout
 - [ ] **Stage 6 — OAuth2** — Login with Google/GitHub, OIDC, resource server
 - [ ] **Stage 7 — Enterprise** — RS256 keys, audit logging, rate limiting, CORS

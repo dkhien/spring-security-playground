@@ -14,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -49,29 +45,18 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    public String generateAccessToken(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return buildAccessToken(userDetails.getUsername(), userDetails.getAuthorities());
-    }
-
-    public String generateAccessToken(UserDetails userDetails) {
-        return buildAccessToken(userDetails.getUsername(), userDetails.getAuthorities());
-    }
-
-    private String buildAccessToken(String username, Collection<? extends GrantedAuthority> authorities) {
+    public String generateAccessToken(SecurityUser user) {
         return Jwts.builder()
-                .subject(username)
-                .claim("roles", authorities.stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .toList())
+                .id(user.getId().toString())
+                .subject(user.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .signWith(getSigningKey())
                 .compact();
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
-        return generateRefreshToken(appUserService.findByUsernameInternal(userDetails.getUsername()));
+    public String generateRefreshToken(SecurityUser user) {
+        return generateRefreshToken(appUserService.findByIdInternal(user.getId()));
     }
 
     public String generateRefreshToken(AppUser appUser) {
@@ -93,18 +78,10 @@ public class JwtTokenProvider {
                 .getPayload();
 
         String username = claims.getSubject();
-        List<String> roles = claims.get("roles", List.class);
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+        var appUser = appUserService.findByUsernameInternal(username);
+        SecurityUser user = SecurityUser.from(appUser);
 
-        UserDetails userDetails = User.builder()
-                .username(username)
-                .password("")
-                .authorities(authorities)
-                .build();
-
-        return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+        return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }
 
     public boolean validateAccessToken(String accessToken) {

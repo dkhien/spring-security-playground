@@ -6,14 +6,13 @@ import com.dkhien.springsecurityplayground.model.jwt.LoginRequest;
 import com.dkhien.springsecurityplayground.model.jwt.LoginResponse;
 import com.dkhien.springsecurityplayground.model.jwt.RefreshRequest;
 import com.dkhien.springsecurityplayground.security.JwtTokenProvider;
+import com.dkhien.springsecurityplayground.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,7 +21,6 @@ public class JwtTokenController implements JwtTokenApi {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
-    private final UserDetailsService userDetailsService;
 
     @Override
     public ResponseEntity<LoginResponse> createToken(LoginRequest loginRequest) {
@@ -34,10 +32,10 @@ public class JwtTokenController implements JwtTokenApi {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        SecurityUser user = (SecurityUser) authentication.getPrincipal();
 
-        String accessToken = tokenProvider.generateAccessToken(authentication);
-        String refreshToken = tokenProvider.generateRefreshToken(userDetails);
+        String accessToken = tokenProvider.generateAccessToken(user);
+        String refreshToken = tokenProvider.generateRefreshToken(user);
         return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
     }
 
@@ -45,10 +43,9 @@ public class JwtTokenController implements JwtTokenApi {
     public ResponseEntity<LoginResponse> refreshToken(RefreshRequest refreshRequest) {
         RefreshToken refreshToken = tokenProvider.validateRefreshToken(refreshRequest.getRefreshToken());
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(
-                refreshToken.getAppUser().getUsername());
+        SecurityUser user = SecurityUser.from(refreshToken.getAppUser());
 
-        String newAccessToken = tokenProvider.generateAccessToken(userDetails);
+        String newAccessToken = tokenProvider.generateAccessToken(user);
         String newRefreshToken = tokenProvider.generateRefreshToken(refreshToken.getAppUser());
         return ResponseEntity.ok(new LoginResponse(newAccessToken, newRefreshToken));
     }
