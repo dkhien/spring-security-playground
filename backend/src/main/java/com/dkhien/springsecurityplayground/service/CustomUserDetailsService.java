@@ -1,6 +1,7 @@
 package com.dkhien.springsecurityplayground.service;
 
 import com.dkhien.springsecurityplayground.repository.AppUserRepository;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -17,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(@NotNull String username) throws UsernameNotFoundException {
         var userOptional = appUserRepository.findByUsername(username);
         if (userOptional.isPresent()) {
             var appUser = userOptional.get();
