@@ -6,6 +6,7 @@ import com.dkhien.springsecurityplayground.exception.UsernameAlreadyTakenExcepti
 import com.dkhien.springsecurityplayground.repository.AppUserRepository;
 import com.dkhien.springsecurityplayground.security.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class AppUserService {
         return appUserRepository.save(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
     public AppUser findByUsername(String username) {
         return appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
