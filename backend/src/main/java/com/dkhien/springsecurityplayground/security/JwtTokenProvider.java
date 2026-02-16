@@ -71,7 +71,7 @@ public class JwtTokenProvider {
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return generateRefreshToken(appUserService.findByUsername(userDetails.getUsername()));
+        return generateRefreshToken(appUserService.findByUsernameInternal(userDetails.getUsername()));
     }
 
     public String generateRefreshToken(AppUser appUser) {

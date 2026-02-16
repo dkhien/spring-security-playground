@@ -31,16 +31,24 @@ public class AppUserService {
         return appUserRepository.save(user);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
-    public AppUser findByUsername(String username) {
+    public AppUser findByUsernameInternal(String username) {
         return appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or principal.id == #id")
-    public AppUser findById(Long id) {
+    @PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
+    public AppUser findByUsername(String username) {
+        return findByUsernameInternal(username);
+    }
+
+    public AppUser findByIdInternal(Long id) {
         return appUserRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or principal.id == #id")
+    public AppUser findById(Long id) {
+        return findByIdInternal(id);
     }
 
     public List<AppUser> findAll() {
