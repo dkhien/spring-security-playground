@@ -158,6 +158,26 @@
 							</configOptions>
 						</configuration>
 					</execution>
+					<execution>
+						<id>auth</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/auth-api.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>com.dkhien.springsecurityplayground.api.auth</apiPackage>
+							<modelPackage>com.dkhien.springsecurityplayground.model.auth</modelPackage>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<useSpringBoot3>true</useSpringBoot3>
+								<useTags>true</useTags>
+								<documentationProvider>none</documentationProvider>
+								<openApiNullable>false</openApiNullable>
+								<skipDefaultInterface>true</skipDefaultInterface>
+							</configOptions>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
