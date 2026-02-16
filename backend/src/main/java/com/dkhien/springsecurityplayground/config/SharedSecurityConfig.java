@@ -1,7 +1,6 @@
 package com.dkhien.springsecurityplayground.config;
 
 import com.dkhien.springsecurityplayground.security.Role;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

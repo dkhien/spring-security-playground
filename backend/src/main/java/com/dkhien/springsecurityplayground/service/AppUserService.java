@@ -1,6 +1,8 @@
 package com.dkhien.springsecurityplayground.service;
 
 import com.dkhien.springsecurityplayground.entity.AppUser;
+import com.dkhien.springsecurityplayground.exception.UserNotFoundException;
+import com.dkhien.springsecurityplayground.exception.UsernameAlreadyTakenException;
 import com.dkhien.springsecurityplayground.repository.AppUserRepository;
 import com.dkhien.springsecurityplayground.security.Role;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ public class AppUserService {
 
     public AppUser signup(String username, String password) {
         if (appUserRepository.findByUsername(username).isPresent()) {
-            throw new IllegalArgumentException("Username already taken");
+            throw new UsernameAlreadyTakenException(username);
         }
 
         AppUser user = new AppUser();
@@ -24,5 +26,10 @@ public class AppUserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(Role.USER);
         return appUserRepository.save(user);
+    }
+
+    public AppUser findByUsername(String username) {
+        return appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
     }
 }

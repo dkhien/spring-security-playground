@@ -1,9 +1,14 @@
 package com.dkhien.springsecurityplayground.security;
 
+import com.dkhien.springsecurityplayground.service.AppUserService;
+import com.dkhien.springsecurityplayground.service.RefreshTokenService;
+import com.dkhien.springsecurityplayground.utility.Utils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,19 +19,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import com.dkhien.springsecurityplayground.entity.RefreshToken;
+
+import java.time.Instant;
+import java.util.*;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.access-token-expiration}")
     private long accessTokenExpiration;
+
+    @Value("${jwt.refresh-token-expiration}")
+    private long refreshTokenExpiration;
+
+    @Autowired
+    private final RefreshTokenService refreshTokenService;
+
+    @Autowired
+    private final AppUserService appUserService;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
@@ -53,9 +68,15 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateRefreshToken() {
-        // Mock: in production, store in DB
-        return UUID.randomUUID().toString();
+    public String generateRefreshToken(UserDetails userDetails) {
+        String rawToken = UUID.randomUUID().toString();
+        var refreshToken = new RefreshToken();
+        refreshToken.setTokenHash(Utils.sha256(rawToken));
+        refreshToken.setExpiryDate(Instant.ofEpochMilli(System.currentTimeMillis() + refreshTokenExpiration));
+        refreshToken.setRevoked(false);
+        refreshToken.setAppUser(appUserService.findByUsername(userDetails.getUsername()));
+        refreshTokenService.save(refreshToken);
+        return rawToken;
     }
 
     public Authentication parseAccessToken(String token) {
@@ -96,8 +117,9 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public boolean validateRefreshToken(String refreshToken) {
-        // Mock: in production, look up in DB and check expiry
-        return refreshToken != null && !refreshToken.isBlank();
+    public Optional<RefreshToken> validateRefreshToken(String rawToken) {
+        return refreshTokenService.findByRawToken(rawToken)
+                .filter(token -> !token.isRevoked())
+                .filter(token -> !token.getExpiryDate().isBefore(Instant.now()));
     }
 }
