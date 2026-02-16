@@ -10,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AppUserService {
@@ -33,5 +35,55 @@ public class AppUserService {
     public AppUser findByUsername(String username) {
         return appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or principal.id == #id")
+    public AppUser findById(Long id) {
+        return appUserRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
+    }
+
+    public List<AppUser> findAll() {
+        return appUserRepository.findAll();
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or principal.id == #id")
+    public AppUser updateUser(Long id, String name, String email) {
+        AppUser user = appUserRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
+        if (name != null) {
+            user.setName(name);
+        }
+        if (email != null) {
+            user.setEmail(email);
+        }
+        return appUserRepository.save(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public AppUser updateRole(Long id, Role role) {
+        AppUser user = appUserRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
+        user.setRole(role);
+        return appUserRepository.save(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteUser(Long id) {
+        if (!appUserRepository.existsById(id)) {
+            throw new UserNotFoundException(id.toString());
+        }
+        appUserRepository.deleteById(id);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
+    public void changePassword(String username, String oldPassword, String newPassword) {
+        AppUser user = appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Old password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        appUserRepository.save(user);
     }
 }
