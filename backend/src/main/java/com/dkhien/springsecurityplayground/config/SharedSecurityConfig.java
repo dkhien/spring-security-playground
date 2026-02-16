@@ -38,14 +38,7 @@ public class SharedSecurityConfig {
         return new InMemoryUserDetailsManager(List.of(normalUser, adminUser));
     }
 
-    @Bean
-    @Profile("db")
-    UserDetailsService dbUserDetailsService(
-            @Qualifier("customUserDetailsService") UserDetailsService customUserDetailsService) {
-        return customUserDetailsService;
-    }
-
-    @Bean
+@Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
         return config.getAuthenticationManager();
     }
