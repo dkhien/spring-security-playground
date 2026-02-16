@@ -21,4 +21,8 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    private String name;
+
+    private String email;
 }
