@@ -1,7 +1,7 @@
 package com.dkhien.springsecurityplayground.service;
 
 import com.dkhien.springsecurityplayground.exception.UserNotFoundException;
-import com.dkhien.springsecurityplayground.security.SecurityUser;
+import com.dkhien.springsecurityplayground.entity.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

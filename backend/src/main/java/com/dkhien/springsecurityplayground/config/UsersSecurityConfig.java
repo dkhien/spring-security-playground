@@ -1,7 +1,7 @@
 package com.dkhien.springsecurityplayground.config;
 
-import com.dkhien.springsecurityplayground.security.JwtAuthenticationFilter;
-import com.dkhien.springsecurityplayground.security.Role;
+import com.dkhien.springsecurityplayground.service.jwt.JwtAuthenticationFilter;
+import com.dkhien.springsecurityplayground.entity.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

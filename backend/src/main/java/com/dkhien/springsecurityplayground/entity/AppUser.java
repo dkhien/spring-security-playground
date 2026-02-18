@@ -1,6 +1,5 @@
 package com.dkhien.springsecurityplayground.entity;
 
-import com.dkhien.springsecurityplayground.security.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 

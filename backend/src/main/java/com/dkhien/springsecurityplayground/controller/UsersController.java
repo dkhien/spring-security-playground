@@ -6,7 +6,7 @@ import com.dkhien.springsecurityplayground.model.users.ChangePasswordRequest;
 import com.dkhien.springsecurityplayground.model.users.UpdateRoleRequest;
 import com.dkhien.springsecurityplayground.model.users.UpdateUserRequest;
 import com.dkhien.springsecurityplayground.model.users.UserResponse;
-import com.dkhien.springsecurityplayground.security.Role;
+import com.dkhien.springsecurityplayground.entity.Role;
 import com.dkhien.springsecurityplayground.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

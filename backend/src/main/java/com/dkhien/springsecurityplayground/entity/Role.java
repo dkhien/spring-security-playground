@@ -1,4 +1,4 @@
-package com.dkhien.springsecurityplayground.security;
+package com.dkhien.springsecurityplayground.entity;
 
 public enum Role {
     USER,

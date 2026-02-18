@@ -4,7 +4,7 @@ import com.dkhien.springsecurityplayground.api.mfa.MfaEnrollmentApi;
 import com.dkhien.springsecurityplayground.model.mfa.ConfirmEnrollRequest;
 import com.dkhien.springsecurityplayground.model.mfa.DisableMfaRequest;
 import com.dkhien.springsecurityplayground.model.mfa.MfaEnrollResponse;
-import com.dkhien.springsecurityplayground.service.MfaEnrollmentService;
+import com.dkhien.springsecurityplayground.service.mfa.MfaEnrollmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

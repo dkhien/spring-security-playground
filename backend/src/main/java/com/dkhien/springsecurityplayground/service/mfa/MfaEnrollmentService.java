@@ -1,14 +1,15 @@
-package com.dkhien.springsecurityplayground.service;
+package com.dkhien.springsecurityplayground.service.mfa;
 
 import com.dkhien.springsecurityplayground.config.TotpConfig;
 import com.dkhien.springsecurityplayground.entity.AppUser;
 import com.dkhien.springsecurityplayground.exception.InvalidOtpException;
-import com.dkhien.springsecurityplayground.security.SecretService;
+import com.dkhien.springsecurityplayground.service.AppUserService;
 import dev.samstevens.totp.code.*;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
 import dev.samstevens.totp.qr.QrGenerator;
 import dev.samstevens.totp.qr.ZxingPngQrGenerator;
+import dev.samstevens.totp.secret.SecretGenerator;
 import dev.samstevens.totp.time.SystemTimeProvider;
 import dev.samstevens.totp.time.TimeProvider;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class MfaEnrollmentService {
 
     private final AppUserService appUserService;
 
-    private final SecretService secretService;
+    private final SecretGenerator secretGenerator;
 
     private final TotpConfig totpConfig;
 
@@ -39,7 +40,7 @@ public class MfaEnrollmentService {
             throw new IllegalStateException("MFA is already enabled");
         }
 
-        var secret = secretService.generateSecret();
+        var secret = secretGenerator.generate();
 
         QrData data = new QrData.Builder()
                 .label(user.getEmail())

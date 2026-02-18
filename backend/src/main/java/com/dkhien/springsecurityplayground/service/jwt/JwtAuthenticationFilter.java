@@ -1,4 +1,4 @@
-package com.dkhien.springsecurityplayground.security;
+package com.dkhien.springsecurityplayground.service.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

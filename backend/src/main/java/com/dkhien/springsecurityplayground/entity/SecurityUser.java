@@ -1,6 +1,5 @@
-package com.dkhien.springsecurityplayground.security;
+package com.dkhien.springsecurityplayground.entity;
 
-import com.dkhien.springsecurityplayground.entity.AppUser;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

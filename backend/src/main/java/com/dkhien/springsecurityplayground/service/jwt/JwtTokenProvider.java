@@ -1,9 +1,9 @@
-package com.dkhien.springsecurityplayground.security;
+package com.dkhien.springsecurityplayground.service.jwt;
 
 import com.dkhien.springsecurityplayground.entity.AppUser;
 import com.dkhien.springsecurityplayground.exception.InvalidRefreshTokenException;
+import com.dkhien.springsecurityplayground.entity.SecurityUser;
 import com.dkhien.springsecurityplayground.service.AppUserService;
-import com.dkhien.springsecurityplayground.service.RefreshTokenService;
 import com.dkhien.springsecurityplayground.utility.Utils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

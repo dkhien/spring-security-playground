@@ -1,4 +1,4 @@
-package com.dkhien.springsecurityplayground.service;
+package com.dkhien.springsecurityplayground.service.jwt;
 
 import com.dkhien.springsecurityplayground.entity.RefreshToken;
 import com.dkhien.springsecurityplayground.exception.RefreshTokenNotFoundException;
@@ -7,8 +7,6 @@ import com.dkhien.springsecurityplayground.utility.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

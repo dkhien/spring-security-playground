@@ -4,7 +4,7 @@ import com.dkhien.springsecurityplayground.entity.AppUser;
 import com.dkhien.springsecurityplayground.exception.UserNotFoundException;
 import com.dkhien.springsecurityplayground.exception.UsernameAlreadyTakenException;
 import com.dkhien.springsecurityplayground.repository.AppUserRepository;
-import com.dkhien.springsecurityplayground.security.Role;
+import com.dkhien.springsecurityplayground.entity.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
