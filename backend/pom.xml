@@ -99,6 +99,12 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.6.3</version>
 		</dependency>
+		<dependency>
+			<groupId>dev.samstevens.totp</groupId>
+			<artifactId>totp</artifactId>
+			<version>1.7.1</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -198,6 +204,26 @@
 							<generatorName>spring</generatorName>
 							<apiPackage>com.dkhien.springsecurityplayground.api.users</apiPackage>
 							<modelPackage>com.dkhien.springsecurityplayground.model.users</modelPackage>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<useSpringBoot3>true</useSpringBoot3>
+								<useTags>true</useTags>
+								<documentationProvider>none</documentationProvider>
+								<openApiNullable>false</openApiNullable>
+								<skipDefaultInterface>true</skipDefaultInterface>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>mfa</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/mfa-api.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>com.dkhien.springsecurityplayground.api.mfa</apiPackage>
+							<modelPackage>com.dkhien.springsecurityplayground.model.mfa</modelPackage>
 							<configOptions>
 								<interfaceOnly>true</interfaceOnly>
 								<useSpringBoot3>true</useSpringBoot3>

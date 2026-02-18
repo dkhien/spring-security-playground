@@ -99,4 +99,8 @@ public class AppUserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         appUserRepository.save(user);
     }
+
+    public void saveUser(AppUser user) {
+        appUserRepository.save(user);
+    }
 }

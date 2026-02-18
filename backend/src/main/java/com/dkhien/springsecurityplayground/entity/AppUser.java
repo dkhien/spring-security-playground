@@ -25,4 +25,8 @@ public class AppUser {
     private String name;
 
     private String email;
+
+    private Boolean mfaEnabled;
+
+    private String mfaSecret;
 }

@@ -1,0 +1,204 @@
+openapi: 3.0.3
+info:
+  title: MFA API
+  version: 1.0.0
+
+paths:
+  /api/mfa/me:
+    get:
+      operationId: mfaMe
+      tags: [mfa-user]
+      summary: Get current user (mfa)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/mfa/public:
+    get:
+      operationId: mfaPublic
+      tags: [mfa-user]
+      summary: Public endpoint (mfa)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/mfa/admin:
+    get:
+      operationId: mfaAdmin
+      tags: [mfa-user]
+      summary: Admin endpoint (mfa)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /api/mfa/token:
+    post:
+      operationId: createToken
+      tags: [mfa-token]
+      summary: Authenticate with credentials (returns temp token if MFA enabled, full tokens if not)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+  /api/mfa/verify-otp:
+    post:
+      operationId: verifyOtp
+      tags: [mfa-token]
+      summary: Verify MFA OTP and get full tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOtpRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyOtpResponse'
+        '401':
+          description: Invalid OTP
+
+  /api/mfa/enroll:
+    post:
+      operationId: enrollMfa
+      tags: [mfa-enrollment]
+      summary: Start MFA enrollment - generates TOTP secret and returns QR code URI
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaEnrollResponse'
+        '400':
+          description: MFA already enabled
+
+  /api/mfa/enroll/confirm:
+    post:
+      operationId: confirmMfaEnroll
+      tags: [mfa-enrollment]
+      summary: Confirm MFA enrollment by verifying OTP code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmEnrollRequest'
+      responses:
+        '200':
+          description: MFA enabled successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Invalid OTP code
+
+  /api/mfa/enroll/disable:
+    post:
+      operationId: disableMfa
+      tags: [mfa-enrollment]
+      summary: Disable MFA (requires valid OTP to confirm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisableMfaRequest'
+      responses:
+        '200':
+          description: MFA disabled
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: MFA not enabled or invalid OTP
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      required: [accessToken, mfaRequired]
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        mfaRequired:
+          type: boolean
+
+    VerifyOtpRequest:
+      type: object
+      required: [accessToken, otpCode]
+      properties:
+        accessToken:
+          type: string
+        otpCode:
+          type: string
+
+    VerifyOtpResponse:
+      type: object
+      required: [accessToken, refreshToken]
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+
+    MfaEnrollResponse:
+      type: object
+      required: [secret, qrCodeUri]
+      properties:
+        secret:
+          type: string
+        qrCodeUri:
+          type: string
+
+    ConfirmEnrollRequest:
+      type: object
+      required: [otpCode]
+      properties:
+        otpCode:
+          type: string
+
+    DisableMfaRequest:
+      type: object
+      required: [otpCode]
+      properties:
+        otpCode:
+          type: string
